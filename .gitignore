@@ -7,3 +7,9 @@ server
 client
 
 .vscode
+
+# output logs
+workstation.*
+
+# input examples
+client.in.*
