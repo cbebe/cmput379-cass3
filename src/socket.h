@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
+#include <chrono>
 #include <string>
 #include <unordered_map>
 
@@ -21,9 +22,16 @@ class SocketServer : public Socket {
   ~SocketServer();
   int receiveTrans();
   void sendResponse();
+  std::string& getClient();
+  int getRequests();
+  std::unordered_map<std::string, int>& getClientRequests();
+  double getDuration();
 
  private:
   std::unordered_map<std::string, int> clientRequests;
+  std::string client;
+  std::chrono::time_point<std::chrono::system_clock> firstReq;
+  std::chrono::time_point<std::chrono::system_clock> lastReq;
   int requests;
   int serverSock;
   int clientSock;

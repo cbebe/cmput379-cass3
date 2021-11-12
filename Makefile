@@ -3,22 +3,21 @@ SHARED_SRC := tands util logger socket
 OBJ=$(SHARED_SRC:%=%.o)
 
 CXXFLAGS := -Wall -Wextra -Wpedantic
-LDFLAGS := -lpthread
 
 APP := server client
 
 all: clean input $(APP)
 
 %: %.o $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CXXFLAGS) -o $@ $^
 
 # wildcard target for C++ source files
 %.o: src/%.cpp
-	$(CC) $(CXXFLAGS) -o $@ -c $< $(LDFLAGS)
+	$(CC) $(CXXFLAGS) -o $@ -c $<
 
 # wildcard target for C source files (tands)
 %.o: src/%.c
-	$(CC) $(CXXFLAGS) -o $@ -c $< $(LDFLAGS)
+	$(CC) $(CXXFLAGS) -o $@ -c $<
 
 # create example inputs
 input:
@@ -32,4 +31,9 @@ clean:
 # remove example inputs
 	rm -f client.in.*
 
-.PHONY: all input clean
+run: all
+	./server 5000 &
+	./client 5000 127.0.0.1 <client.in.1 &
+	./client 5000 127.0.0.1 <client.in.2 &
+
+.PHONY: all input clean run
