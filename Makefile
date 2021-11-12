@@ -1,18 +1,24 @@
+CC=g++
 SHARED_SRC := tands util logger
 OBJ=$(SHARED_SRC:%=%.o)
 
-CFLAGS := -Wall -Wextra -Wpedantic
+CXXFLAGS := -Wall -Wextra -Wpedantic
 LDFLAGS := -lpthread
 
 APP := server client
 
-all: $(APP)
+all: clean $(APP)
 
 %: %.o $(OBJ)
-	gcc $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
+# wildcard target for C++ source files
+%.o: src/%.cpp
+	$(CC) $(CXXFLAGS) -o $@ -c $< $(LDFLAGS)
+
+# wildcard target for C source files (tands)
 %.o: src/%.c
-	gcc $(CFLAGS) -o $@ -c $< $(LDFLAGS)
+	$(CC) $(CXXFLAGS) -o $@ -c $< $(LDFLAGS)
 
 # create example inputs
 input:

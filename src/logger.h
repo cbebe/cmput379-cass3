@@ -1,11 +1,19 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-FILE* init_outfile(int port);
+#include <fstream>
 
-void get_host(char* hostname_pid);
-void get_time(char* time_str);
-void log_send(FILE* fp, int arg);
-void log_recv(FILE* fp, int trans);
+class Logger {
+ public:
+  Logger(int port);
+  ~Logger();
+  void logSend(int arg);
+  void logRecv(int trans);
+  void logClient(std::string address);
+  std::ofstream outfile;
+
+ private:
+  void logWithTime(std::string message);
+};
 
 #endif /* _LOGGER_H_ */

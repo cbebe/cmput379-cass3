@@ -1,15 +1,18 @@
 // https://www.binarytides.com/server-client-example-c-sockets-linux/
 #include <arpa/inet.h>  //inet_addr
-#include <stdio.h>
-#include <stdlib.h>
 
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+
+#include "logger.h"
 #include "util.h"
 
 int main(int argc, char const *argv[]) {
-  check_argc(argc, 2, argv[0]);
+  checkArgc(argc, 2, argv[0]);
 
-  int port = atoi(argv[1]);
-  check_port(port);
+  int port = std::atoi(argv[1]);
+  checkPort(port);
 
   int socket_desc;
   struct sockaddr_in server, client;
@@ -22,7 +25,7 @@ int main(int argc, char const *argv[]) {
   server.sin_addr.s_addr = INADDR_ANY;
   server.sin_port = htons(port);
 
-  if (bind(socket_desc, &server, sizeof(server)) < 0) {
+  if (bind(socket_desc, (struct sockaddr *)&server, sizeof(server)) < 0) {
     perror("bind failed");
     return 1;
   }
@@ -31,7 +34,8 @@ int main(int argc, char const *argv[]) {
 
   socklen_t sock_len = sizeof(struct sockaddr_in);
   int client_sock;
-  while ((client_sock = accept(socket_desc, &client, &sock_len))) {
+  while ((client_sock =
+              accept(socket_desc, (struct sockaddr *)&client, &sock_len))) {
     char request[32], response[32];
 
     int read_size = recv(client_sock, request, 32, 0);
@@ -40,7 +44,7 @@ int main(int argc, char const *argv[]) {
 
     char cmd;
     int arg;
-    scanf("%c%d", &cmd, &arg);
+    std::scanf("%c%d", &cmd, &arg);
     Trans(arg);
   }
 
