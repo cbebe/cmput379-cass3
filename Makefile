@@ -5,6 +5,9 @@ OBJ=$(SHARED_SRC:%=%.o)
 CXXFLAGS := -Wall -Wextra -Wpedantic -O
 
 APP := server client
+MAN := $(APP:%=%.1)
+LOCAL_MAN := $(MAN:%=/usr/local/man/man1/%)
+LOCAL_MAN_GZ := $(LOCAL_MAN:%=%.gz)
 
 all: clean input $(APP)
 
@@ -30,10 +33,32 @@ clean:
 	rm -f $(shell hostname).*
 # remove example inputs
 	rm -f client.in.*
+# remove man outputs
+	rm -f $(MAN)
+
+man: $(LOCAL_MAN_GZ)
+	sudo mandb
+
+keep: $(MAN)
+
+clean-man: $(LOCAL_MAN_GZ)
+	sudo rm -f $^
+	sudo mandb
+
+%.1.gz: %.1
+	sudo gzip -f $^
+
+/usr/local/man/man1/%.1: %.1
+	sudo cp $^ $@ 
+	rm $<
+
+%.1: %.md
+	pandoc $< -s -t man > $@
+
 
 run: all
 	./server 5000 &
 	./client 5000 127.0.0.1 <client.in.1 &
 	./client 5000 127.0.0.1 <client.in.2 &
 
-.PHONY: all input clean run
+.PHONY: all input clean run man keep
