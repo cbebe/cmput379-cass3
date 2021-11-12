@@ -8,9 +8,7 @@
 
 int main(int argc, char const *argv[]) {
   checkArgc(argc, 3, argv[0]);
-  int port = std::atoi(argv[1]);
-  checkPort(port);
-
+  int port = getPort(argv[1]);
   Logger logger(port, argv[2]);
   SocketClient client(port, argv[2]);
 
@@ -28,7 +26,7 @@ int main(int argc, char const *argv[]) {
     }
   }
 
-  logger.logTrans(trans);
+  logger.logSummary(trans);
 
   return 0;
 }

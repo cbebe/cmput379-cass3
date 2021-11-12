@@ -1,6 +1,7 @@
 #include <unistd.h>
 
 #include <chrono>
+#include <cstdlib>
 #include <iomanip>
 #include <iostream>
 
@@ -9,6 +10,11 @@
 
 #include "util.h"
 
+/**
+ * @brief Get the current time
+ *
+ * @return std::string the current time formatted for logging
+ */
 std::string getTime() {
   using namespace std::chrono;
   std::stringstream s;
@@ -20,13 +26,25 @@ std::string getTime() {
   return s.str();
 }
 
+/**
+ * @brief Get the hostname
+ *
+ * @return std::string hostname of the current process
+ */
 std::string getHost() {
   char name[255];
   gethostname(name, sizeof(name));
   return std::string(name) + "." + std::to_string(getpid());
 }
 
-void checkArgc(int argc, int expected, char const *program) {
+/**
+ * @brief Check that the program received enough arguments
+ *
+ * @param argc argument count
+ * @param expected expected argument count
+ * @param program name of program
+ */
+void checkArgc(int argc, int expected, char const* program) {
   if (argc == expected) return;  // ok
 
   if (expected == 2) {
@@ -37,10 +55,18 @@ void checkArgc(int argc, int expected, char const *program) {
   exit(1);
 }
 
-void checkPort(int port) {
-  if (port >= MIN_PORT && port <= MAX_PORT) return;  // ok
+/**
+ * @brief Check that the given port argument is in the range
+ *
+ * @param port the given port number
+ */
+int getPort(char const* arg) {
+  int port = std::atoi(arg);
+  if (port >= MIN_PORT && port <= MAX_PORT) return port;  // ok
 
   std::cerr << "Port out of range: " << port << ", [" << MIN_PORT << ", "
             << MAX_PORT << "]\n";
   exit(1);
+  // never gets here
+  return -1;
 }

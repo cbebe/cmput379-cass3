@@ -15,9 +15,9 @@ class Logger {
   void logSend(int arg);
   void logRecv(int trans);
   void logSleep(int units);
-  void logTrans(int trans);
   void logRequest(int trans, int arg, const std::string& client);
   void logDone(int trans, const std::string& client);
+  void logSummary(int trans);
   void logSummary(SocketServer& server);
 
  private:

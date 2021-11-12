@@ -11,11 +11,16 @@
 #include "socket.h"
 #include "util.h"
 
-#define TIMEOUT 5
+#define TIMEOUT 30
 
 Logger* logger;
 SocketServer* server;
 
+/**
+ * @brief Handler for timeout. Prints summary and closes logfile
+ *
+ * @param signum unused
+ */
 void sighandler(int signum) {
   (void)(signum);
   logger->logSummary(*server);
@@ -27,9 +32,7 @@ void sighandler(int signum) {
 int main(int argc, char const* argv[]) {
   checkArgc(argc, 2, argv[0]);
   signal(SIGALRM, sighandler);
-
-  int port = std::atoi(argv[1]);
-  checkPort(port);
+  int port = getPort(argv[1]);
   server = new SocketServer(port);
   logger = new Logger(port);
 

@@ -2,7 +2,7 @@ CC=g++
 SHARED_SRC := tands util logger socket
 OBJ=$(SHARED_SRC:%=%.o)
 
-CXXFLAGS := -Wall -Wextra -Wpedantic
+CXXFLAGS := -Wall -Wextra -Wpedantic -O
 
 APP := server client
 

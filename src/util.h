@@ -5,7 +5,7 @@ std::string getTime();
 std::string getHost();
 
 void checkArgc(int argc, int expected, char const *program);
-void checkPort(int port);
+int getPort(char const *arg);
 
 void Trans(int n);
 void Sleep(int n);
