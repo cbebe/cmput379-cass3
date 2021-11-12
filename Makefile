@@ -1,5 +1,5 @@
 CC=g++
-SHARED_SRC := tands util logger
+SHARED_SRC := tands util logger socket
 OBJ=$(SHARED_SRC:%=%.o)
 
 CXXFLAGS := -Wall -Wextra -Wpedantic
@@ -7,7 +7,7 @@ LDFLAGS := -lpthread
 
 APP := server client
 
-all: clean $(APP)
+all: clean input $(APP)
 
 %: %.o $(OBJ)
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)

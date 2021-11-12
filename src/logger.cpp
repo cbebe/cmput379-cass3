@@ -12,6 +12,11 @@ Logger::Logger(int port) {
   outfile << "Using port " << port << std::endl;
 }
 
+Logger::Logger(int port, std::string address) : Logger(port) {
+  outfile << "Using server address " << address << std::endl;
+  outfile << "Host " << getHost() << std::endl;
+}
+
 Logger::~Logger() { outfile.close(); }
 
 void Logger::logWithTime(std::string message) {
@@ -25,8 +30,13 @@ std::string strOp(const char* pre, int val) {
 }
 
 void Logger::logSend(int val) { logWithTime(strOp("Send (T", val)); }
+
 void Logger::logRecv(int val) { logWithTime(strOp("Recv (D", val)); }
-void Logger::logClient(std::string address) {
-  outfile << "Using server address " << address << std::endl;
-  outfile << "Host " << getHost() << std::endl;
+
+void Logger::logSleep(int units) {
+  outfile << "Sleep " << std::setw(2) << units << " units" << std::endl;
+}
+
+void Logger::logTrans(int trans) {
+  outfile << "Sent " << std::setw(2) << trans << " transactions" << std::endl;
 }
