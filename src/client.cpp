@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iomanip>
+#include <iostream>
 
 #include "logger.h"
 #include "socket.h"
@@ -19,10 +20,12 @@ int main(int argc, char const *argv[]) {
     if (cmd == 'S') {
       logger.logSleep(arg);
       Sleep(arg);
-    } else {  // cmd == 'T'
+    } else if (cmd == 'T') {
       logger.logSend(arg);
       ++trans;
       logger.logRecv(client.sendTrans(arg));
+    } else {
+      std::cerr << "Bad input, ignoring: " << cmd << " " << arg << std::endl;
     }
   }
 
