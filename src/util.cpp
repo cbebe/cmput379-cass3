@@ -27,11 +27,12 @@ std::string getTime() {
 }
 
 /**
- * @brief Get the hostname
+ * @brief Get the name of the current process defined by hostname.pid
  *
- * @return std::string hostname of the current process
+ *
+ * @return std::string process name
  */
-std::string getHost() {
+std::string getProcessName() {
   char name[255];
   gethostname(name, sizeof(name));
   return std::string(name) + "." + std::to_string(getpid());
@@ -58,7 +59,8 @@ void checkArgc(int argc, int expected, char const* program) {
 /**
  * @brief Check that the given port argument is in the range
  *
- * @param port the given port number
+ * @param arg the command line argument for port
+ * @return int the port number
  */
 int getPort(char const* arg) {
   int port = std::atoi(arg);

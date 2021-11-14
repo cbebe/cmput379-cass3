@@ -8,14 +8,13 @@
 #include "util.h"
 
 Logger::Logger(int port) {
-  std::string filename = getHost();
-  outfile.open(filename);
+  outfile.open(getProcessName());
   outfile << "Using port " << port << std::endl;
 }
 
 Logger::Logger(int port, const std::string& address) : Logger(port) {
   outfile << "Using server address " << address << std::endl;
-  outfile << "Host " << getHost() << std::endl;
+  outfile << "Host " << getProcessName() << std::endl;
 }
 
 Logger::~Logger() { outfile.close(); }

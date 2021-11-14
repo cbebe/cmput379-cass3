@@ -2,7 +2,7 @@
 #define _UTIL_H_
 
 std::string getTime();
-std::string getHost();
+std::string getProcessName();
 
 void checkArgc(int argc, int expected, char const *program);
 int getPort(char const *arg);

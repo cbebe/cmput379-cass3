@@ -107,7 +107,7 @@ int SocketClient::sendTrans(int arg) {
     return -1;
   }
 
-  std::string message = "T" + std::to_string(arg) + " " + getHost();
+  std::string message = "T" + std::to_string(arg) + " " + getProcessName();
 
   if (send(sock, message.c_str(), message.length(), 0) < 0) {
     std::cerr << "send failed" << std::endl;
