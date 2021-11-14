@@ -9,6 +9,8 @@ MAN := $(APP:%=%.1)
 LOCAL_MAN := $(MAN:%=/usr/local/man/man1/%)
 LOCAL_MAN_GZ := $(LOCAL_MAN:%=%.gz)
 
+IP := 127.0.0.1
+
 all: clean input $(APP)
 
 %: %.o $(OBJ)
@@ -52,13 +54,27 @@ clean-man: $(LOCAL_MAN_GZ)
 	sudo cp $^ $@ 
 	rm $<
 
+# convert markdown to troff using pandoc
+# remove pandoc comment using sed
 %.1: %.md
-	pandoc $< -s -t man > $@
+	pandoc $< -s -t man | tail -n +3 > $@
 
+# run locally
+run: run-server run-clients
 
-run: all
+run-server: server ip
 	./server 5000 &
-	./client 5000 127.0.0.1 <client.in.1 &
-	./client 5000 127.0.0.1 <client.in.2 &
 
-.PHONY: all input clean run man keep
+run-clients:
+	./client 5000 $(IP) <client.in.1 &
+	./client 5000 $(IP) <client.in.2 &
+
+# connect clients to a remote server
+remote: IP = $(shell cat ip 2>/dev/null || echo "127.0.0.1")
+remote: client run-clients
+
+# get server IP address
+ip:
+	echo $(shell curl ifconfig.me) > $@
+
+.PHONY: all input clean run man keep run-clients run-server
