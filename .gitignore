@@ -17,3 +17,5 @@ client.in.*
 example
 ip
 *.1
+*.pdf
+*.tar.gz

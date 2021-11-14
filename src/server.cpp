@@ -11,9 +11,16 @@
 #include "socket.h"
 #include "util.h"
 
-#define TIMEOUT 30
-
+/**
+ * @brief Source-global pointer so that the signal handler has a reference to
+ * the logger
+ */
 Logger* logger;
+
+/**
+ * @brief Source-global pointer so that the signal handler has a reference to
+ * the socket server
+ */
 SocketServer* server;
 
 /**
@@ -37,7 +44,9 @@ int main(int argc, char const* argv[]) {
   logger = new Logger(port);
 
   while (true) {
-    alarm(TIMEOUT);
+    // SERVER_TIMEOUT is defined in the Makefile
+    // 5 seconds by default for dev, 30 seconds in the submission target
+    alarm(SERVER_TIMEOUT);
     int arg = server->receiveTrans();
     logger->logRequest(server->getRequests(), arg, server->getClient());
     Trans(arg);

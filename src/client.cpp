@@ -23,7 +23,9 @@ int main(int argc, char const *argv[]) {
     } else if (cmd == 'T') {
       logger.logSend(arg);
       ++trans;
-      logger.logRecv(client.sendTrans(arg));
+      int transNumber = client.sendTrans(arg);
+      if (transNumber < 0) break;  // there was an error
+      logger.logRecv(transNumber);
     } else {
       std::cerr << "Bad input, ignoring: " << cmd << " " << arg << std::endl;
     }
