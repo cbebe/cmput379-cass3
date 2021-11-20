@@ -66,6 +66,9 @@ submit: $(SUBMISSION_TAR) clean
 $(SUBMISSION_TAR): src $(MAN) README Makefile
 	tar czf $@ $^
 
+.INTERMEDIATE: README
+README: README.md
+	cp $< $@
 
 # connect clients to a remote server
 remote: IP = $(shell cat ip 2>/dev/null || echo "127.0.0.1")
